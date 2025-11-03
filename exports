@@ -8,8 +8,7 @@ export HOMEBREW_PREFIX="/opt/homebrew/"
 command -v vim 2>&1 >/dev/null && export {EDITOR,VISUAL}='vim'
 
 # Force less instead of more if installed
-export PAGER=less
-export MANPAGER=less
+command -v less 2>&1 >/dev/null && export PAGER=less
 
 # Add common directories to path
 export PATH="/home/$USER/bin:/home/$USER/bin/*/:/home/$USER/.local/bin:$PATH"
