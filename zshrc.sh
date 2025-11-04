@@ -2,7 +2,7 @@
 # github.com/vipau/zsimple
 
 # Disable shellcheck checks meant for bash
-# shellcheck disable=SC2034 # SAVEHIST,HISTDUP,WORDCHARS are only for bash
+# shellcheck disable=SC2034 # SAVEHIST,HISTDUP,WORDCHARS are only for zsh
 # shellcheck disable=SC1090 # "source first readable file from list" is not possible without non-constant source
 
 #=====
