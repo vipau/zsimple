@@ -10,6 +10,7 @@ Simple, modern, fast zsh environment.
 ## Install
 
 Please run `install.sh` with bash or zsh.  
+Make sure to review the contents of ~/.aliases and ~/.exports afterwards to customize to your liking.  
 It will backup any existing files called `.zshrc`, `.exports` and `.aliases`.  
 Please also keep your own backups of dotfiles as well.
 
