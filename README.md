@@ -14,7 +14,7 @@ Simple, modern, fast zsh environment with no hard dependencies.
 
 ## Test in docker 
 
-Note: The prompt will look more minimal than a regular setup
+Note: The prompt will look more minimal than a regular setup due to busybox and extremely minimal setup
 
 ```bash
 git clone https://github.com/vipau/zsimple.git
