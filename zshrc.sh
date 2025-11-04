@@ -1,6 +1,10 @@
 # zsimple
 # github.com/vipau/zsimple
 
+# Disable shellcheck checks meant for bash
+# shellcheck disable=SC2034 # SAVEHIST,HISTDUP,WORDCHARS are only for bash
+# shellcheck disable=SC1090 # "source first readable file from list" is not possible without non-constant source
+
 #=====
 # Shell settings
 #=====
@@ -15,7 +19,7 @@ unsetopt beep extendedglob
 # History settings (check 'man zfsoptions')
 HISTSIZE=1000
 SAVEHIST=1000
-HISTFILE=~/.histfile
+HISTFILE="$HOME/.histfile"
 HISTDUP=erase
 set +H # turn off history expansion (more secure)
 
@@ -176,7 +180,7 @@ fi
 
 if command -v ssh-agent >/dev/null 2>&1 ; then
   # set SSH_AUTH_SOCK env var to a fixed value
-  export SSH_AUTH_SOCK=~/.ssh/ssh-agent.sock
+  export SSH_AUTH_SOCK="$HOME/.ssh/ssh-agent.sock"
 
   # test whether $SSH_AUTH_SOCK is valid
   ssh-add -l >/dev/null 2>&1
