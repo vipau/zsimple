@@ -3,7 +3,7 @@
 #=====
 
 # edit zshrc
-alias zshrc="$EDITOR ~/.zshrc"
+alias zshrc="${EDITOR:-vim} ~/.zshrc"
 
 # reload without entering a nested zsh
 alias reload="exec zsh"
