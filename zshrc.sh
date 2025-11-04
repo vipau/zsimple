@@ -174,28 +174,6 @@ fi
 [ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 
 #=====
-
-# Reuse existing SSH agent or start a new one
-#=====
-
-if command -v ssh-agent >/dev/null 2>&1 ; then
-
-  # k
-  # set SSH_AUTH_SOCK env var to a fixed value
-  export SSH_AUTH_SOCK="$HOME/.ssh/ssh-agent.sock"
-
-  # get the PID for existing ssh-agent
-  SSH_AUTH_PID="$(ps aux | grep ssh-agent | head -n1 | awk '{print $2}')"
-  export SSH_AUTH_PID
-    
-  # test whether $SSH_AUTH_SOCK is valid
-  ssh-add -l >/dev/null 2>&1
-
-  # if not valid or no PID found, then start ssh-agent using $SSH_AUTH_SOCK
-  [ $? -ge 2 ] && [ -z "$SSH_AUTH_PID" ] && ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
-fi
-
-#=====
 # Start starship if available
 #=====
 
