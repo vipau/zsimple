@@ -14,6 +14,6 @@ fi
 git clone https://github.com/vipau/zsimple.git
 cd zsimple
 
-cp zshrc ~/.zshrc
-cp aliases ~/.aliases
-cp exports ~/.exports
+cp zshrc.zsh ~/.zshrc
+cp aliases.sh ~/.aliases
+cp exports.sh ~/.exports
