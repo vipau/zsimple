@@ -11,9 +11,6 @@ echo "Couldn't properly name backups with their date! they will be like: ~/.zshr
   cp ~/.exports /.exports-zsimplebkp
 fi
 
-git clone https://github.com/vipau/zsimple.git
-cd zsimple || echo "Folder zsimple does not exist :(" && exit 127
-
 cp zshrc.zsh ~/.zshrc
 cp aliases.sh ~/.aliases
 cp exports.sh ~/.exports
