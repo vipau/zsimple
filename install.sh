@@ -14,3 +14,4 @@ fi
 cp zshrc.zsh "$HOME/.zshrc"
 cp aliases.sh "$HOME/.aliases"
 cp exports.sh "$HOME/.exports"
+chmod +x "$HOME/.zshrc" "$HOME/.aliases" "$HOME/.exports"
