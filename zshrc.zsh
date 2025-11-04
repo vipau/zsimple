@@ -163,14 +163,17 @@ else
   compinit -C -i -d "$_compdump"
 fi
 
-###
+#=====
 # Load aliases (at the end, so they override)
-###
+#=====
+
 [ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 
-###
+#=====
+
 # Reuse existing SSH agent or start a new one
-###
+#=====
+
 if command -v ssh-agent >/dev/null 2>&1 ; then
   # set SSH_AUTH_SOCK env var to a fixed value
   export SSH_AUTH_SOCK=~/.ssh/ssh-agent.sock
@@ -181,6 +184,7 @@ if command -v ssh-agent >/dev/null 2>&1 ; then
   # if not valid, then start ssh-agent using $SSH_AUTH_SOCK
   [ $? -ge 2 ] && ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
 fi
+
 #=====
 # Start starship if available
 #=====
