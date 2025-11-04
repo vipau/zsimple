@@ -11,4 +11,4 @@ command -v vim >/dev/null 2>&1  && export {EDITOR,VISUAL}='vim'
 command -v less >/dev/null 2>&1 && export PAGER=less
 
 # Add common directories to path
-export PATH="/home/$USER/bin:/home/$USER/bin/*/:/home/$USER/.local/bin:$PATH"
+export PATH="$HOME/bin:$HOME/bin/*/:$HOME/.local/bin:$PATH"
