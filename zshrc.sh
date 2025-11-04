@@ -179,8 +179,7 @@ if command -v ssh-agent >/dev/null 2>&1 ; then
   export SSH_AUTH_SOCK=~/.ssh/ssh-agent.sock
 
   # test whether $SSH_AUTH_SOCK is valid
-  ssh-add -l 2>&1 >/dev/null
-
+  ssh-add -l >/dev/null 2>&1
   # if not valid, then start ssh-agent using $SSH_AUTH_SOCK
   [ $? -ge 2 ] && ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
 fi
