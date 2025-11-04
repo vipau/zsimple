@@ -55,7 +55,6 @@ else
   fi
 fi
 
-
 # Helper: clone a GitHub repo (shallow) to $ZSH_PLUGIN_DIR if not present
 _clone_if_needed() {
   # $1 = github org/repo ; $2 = local dir name (optional)
@@ -166,6 +165,19 @@ fi
 ###
 [ -f "$HOME/.aliases" ] && source "$HOME/.aliases"
 
+###
+# Reuse existing SSH agent or start a new one
+###
+if command -v ssh-agent >/dev/null 2>&1 ; then
+  # set SSH_AUTH_SOCK env var to a fixed value
+  export SSH_AUTH_SOCK=~/.ssh/ssh-agent.sock
+
+  # test whether $SSH_AUTH_SOCK is valid
+  ssh-add -l 2>/dev/null >/dev/null
+
+  # if not valid, then start ssh-agent using $SSH_AUTH_SOCK
+  [ $? -ge 2 ] && ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
+fi
 #=====
 # Start starship if available
 #=====
