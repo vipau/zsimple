@@ -12,6 +12,17 @@ Simple, modern, fast zsh environment with no hard dependencies.
 - No plugin manager (tries system paths first, otherwise asks if to git clone)
 - Only 3 (very audited) plugins: zsh-autosuggestions, zsh-autosuggestions, zsh-syntax-highlighting
 
+## Test in docker 
+
+Note: The prompt will look more minimal than a regular setup
+
+```bash
+git clone https://github.com/vipau/zsimple.git
+cd zsimple
+docker build -t zsimple:latest .
+docker run -it zsimple:latest
+```
+
 ## Install
 
 This will backup any existing files called `.zshrc`, `.exports` and `.aliases`.  
