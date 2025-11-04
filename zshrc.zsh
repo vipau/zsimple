@@ -23,7 +23,7 @@ set +H # turn off history expansion (more secure)
 export KEYTIMEOUT=1
 
 #=====
-# Load exports
+# Load exports (we do this first as they contain important variables)
 #=====
 
 [ -f "$HOME/.exports" ] && source "$HOME/.exports"
@@ -33,7 +33,7 @@ export KEYTIMEOUT=1
 #=====
 
 # Where to place lightweight clones if distro packages are missing
-: ${ZSH_PLUGIN_DIR:="$HOME/.zsh/plugins"}
+: "${ZSH_PLUGIN_DIR:=$HOME/.zsh/plugins}"
 mkdir -p "$ZSH_PLUGIN_DIR" "$HOME/.cache/zsh"
 
 # Helper: source the first readable file from a list
