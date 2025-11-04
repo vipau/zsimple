@@ -22,8 +22,13 @@ git clone https://github.com/vipau/zsimple.git
 cd zsimple
 sh install.sh
 zsh
-# For the cute prompt, install starship with this (and apply my theme linked above)
-# curl -sS https://starship.rs/install.sh | sh
+```
+
+For a cute prompt with Starship and (optionally) my custom theme, also run this:
+```bash
+curl -sS https://starship.rs/install.sh | sh
+cp "$HOME/.config/starship.toml" "$HOME/.config/starship.toml-backup"
+curl -o "$HOME/.config/starship.toml" "https://vipau.dev/files/starship.toml"
 ```
 
 Make sure to review the contents of ~/.aliases and ~/.exports afterwards, and customize to your liking.  
