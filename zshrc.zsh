@@ -36,6 +36,9 @@ export KEYTIMEOUT=1
 : "${ZSH_PLUGIN_DIR:=$HOME/.zsh/plugins}"
 mkdir -p "$ZSH_PLUGIN_DIR" "$HOME/.cache/zsh"
 
+# If homebrew root is not defined in ~/.exports , initialize it
+: "${HOMEBREW_PREFIX:=/opt/homebrew}"
+
 # Helper: source the first readable file from a list
 _source_first() {
   for f in "$@"; do
@@ -73,7 +76,7 @@ _clone_if_needed() {
 if ! _source_first \
   /usr/share/zsh/plugins/zsh-completions/zsh-completions.plugin.zsh \
   /usr/share/zsh-completions/zsh-completions.plugin.zsh \
-  /opt/homebrew/share/zsh-completions/zsh-completions.plugin.zsh \
+  ${HOMEBREW_PREFIX}/share/zsh-completions/zsh-completions.plugin.zsh \
   /usr/local/share/zsh-completions/zsh-completions.plugin.zsh
 then
   _source_first "$(_clone_if_needed zsh-users/zsh-completions)"/*.zsh >/dev/null 2>&1
@@ -83,7 +86,7 @@ fi
 if ! _source_first \
   /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh \
   /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
-  /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
+  ${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
   /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 then
   _source_first "$(_clone_if_needed zsh-users/zsh-autosuggestions)"/*.zsh >/dev/null 2>&1
@@ -92,7 +95,7 @@ fi
 # --- zsh-syntax-highlighting --- (must be last)
 if ! _source_first \
   /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
-  /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
+  ${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
   /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 then
   _source_first "$(_clone_if_needed zsh-users/zsh-syntax-highlighting)"/*.zsh >/dev/null 2>&1
@@ -147,7 +150,7 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 
 #=====
 
 # Optional bash-style completions (enable only if you need them)
-if [ -d /etc/bash_completion.d ] || [ -f /etc/bash_completion ] || [ -d /opt/homebrew/etc/bash_completion.d ]; then
+if [ -d /etc/bash_completion.d ] || [ -f /etc/bash_completion ] || [ -d ${HOMEBREW_PREFIX}/etc/bash_completion.d ]; then
   autoload -U +X bashcompinit && bashcompinit
 fi
 
