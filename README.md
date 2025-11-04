@@ -21,6 +21,9 @@ Please also always keep your own backups of dotfiles.
 git clone https://github.com/vipau/zsimple.git
 cd zsimple
 sh install.sh
+zsh
+# For the cute prompt, install starship with this (and apply my theme linked above)
+# curl -sS https://starship.rs/install.sh | sh
 ```
 
 Make sure to review the contents of ~/.aliases and ~/.exports afterwards, and customize to your liking.  
