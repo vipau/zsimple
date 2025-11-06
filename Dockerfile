@@ -9,6 +9,8 @@ COPY exports.sh /root/.exports
 COPY aliases.sh /root/.aliases
 COPY zshrc.sh /root/.zshrc
 RUN chmod -R 770 /root/.exports /root/.aliases /root/.zshrc
+RUN mkdir -p /root/.config/
+RUN curl -o /root/.config/starship.toml "https://vipau.dev/files/starship.toml"
 
 # run the zshrc once so that plugins get git cloned
 RUN zsh -c 'source /root/.zshrc'
