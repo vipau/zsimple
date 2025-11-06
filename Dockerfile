@@ -2,7 +2,7 @@
 FROM debian:stable
 
 # upgrade all, install zsh and all optional dependencies too, then clean apt cache (for final image size)
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt upgrade --assume-yes && DEBIAN_FRONTEND=noninteractive apt install -y --assume-yes zsh git starship man-db && apt clean
+RUN apt update && DEBIAN_FRONTEND=noninteractive apt upgrade --assume-yes && DEBIAN_FRONTEND=noninteractive apt install -y --assume-yes zsh git starship man-db curl neovim && apt clean
 
 # copy zsimple to root home, set permissions
 COPY exports.sh /root/.exports
