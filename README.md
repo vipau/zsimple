@@ -31,15 +31,13 @@ Please also always keep your own backups of dotfiles.
 ```bash
 git clone https://github.com/vipau/zsimple.git
 cd zsimple
-sh install.sh
-zsh
-```
 
-For a cute prompt with Starship and (optionally) my custom theme, also run this:
-```bash
-curl -sS https://starship.rs/install.sh | sh
-cp "$HOME/.config/starship.toml" "$HOME/.config/starship.toml-backup"
-curl -o "$HOME/.config/starship.toml" "https://vipau.dev/files/starship.toml"
+# Also copy my starship theme (does not install starship itself)
+ZSIMPLE_INSTALL_THEME=1 sh install.sh
+# if you don't want starship or have your own config:
+# sh install.sh
+
+zsh
 ```
 
 Make sure to review the contents of ~/.aliases and ~/.exports afterwards, and customize to your liking.  

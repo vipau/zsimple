@@ -15,3 +15,5 @@ cp zshrc.sh "$HOME/.zshrc"
 cp aliases.sh "$HOME/.aliases"
 cp exports.sh "$HOME/.exports"
 chmod +x "$HOME/.zshrc" "$HOME/.aliases" "$HOME/.exports"
+
+[ "$ZSIMPLE_INSTALL_THEME" -eq 1 ] && mkdir -p "$HOME/.config" && cp starship.toml "$HOME/.config/starship.toml"

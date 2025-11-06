@@ -1,0 +1,323 @@
+# Get editor completions based on the config schema
+"$schema" = 'https://starship.rs/config-schema.json'
+
+###
+### Basic options
+###
+
+add_newline = true
+follow_symlinks = false
+palette = 'solarizeddark'
+continuation_prompt = '[▶▶](fg:base1) '
+
+###
+### Actual prompt structure
+###
+
+format = """
+$username\
+$hostname\
+${custom.sshwarn}\
+$directory\
+$shell\
+$os\
+$fill \
+$status \
+$cmd_duration\
+$time\
+$line_break\
+$jobs\
+$battery\
+[❯](fg:base1) """
+
+###
+### Color palette
+###
+
+[palettes.solarizeddark]
+base03 = "#002b36"
+base02 = "#073642"
+base01 = "#586e75"
+base00 = "#657b83"
+base0 = "#839496"
+base1 = "#93a1a1"
+base2 = "#eee8d5"
+base3 = "#fdf6e3"
+yellow = "#b58900"
+orange = "#cb4b16"
+red = "#dc322f"
+magenta = "#d33682"
+violet = "#6c71c4"
+blue =   "#268bd2"
+cyan =  "#2aa198"
+green =  "#859900"
+
+###
+### Modules configuration (careful with the formats!)
+###
+
+[username]
+format = "[$user]($style)"
+show_always = true
+style_user = 'bold fg:cyan'
+style_root = 'bold blink fg:#FF0000 bg:#000000'
+
+[hostname]
+disabled = false
+ssh_only = true
+format = '[@](fg:base0)[$hostname](bold fg:green) '
+ssh_symbol = ''
+
+[custom.sshwarn]
+disabled = false
+when = '[ -n "$SSH_CONNECTION" ]'
+command = '[ -n "$SSH_CONNECTION" ] && echo -n "<SSH>"'
+shell = 'sh' # makes it work on fish, nushell
+format = '[$output](bold red)'
+
+[directory]
+disabled = false
+style = 'bold fg:yellow'
+format = ' [at](fg:base01) [$path]($style) '
+truncation_symbol = '[...]/'
+
+[shell]
+disabled = false
+style = 'bold fg:violet'
+format = '[in](fg:base01) [$indicator]($style) ' 
+zsh_indicator = "zsh"
+bash_indicator = "bash"
+fish_indicator = "fish"
+powershell_indicator = "pwsh"
+unknown_indicator = "unknown"
+
+[os]
+disabled = false
+format = "[on](fg:base01) [$symbol](fg:blue) "
+
+[fill]
+symbol = '-'
+style = "fg:base01"
+
+[status]
+disabled = false
+format = '[\[$symbol$common_meaning$signal_name$maybe_int\]]($style)'
+pipestatus_format = '\[$pipestatus\] => [$symbol$common_meaning$signal_name$maybe_int]($style)'
+symbol = ''
+success_symbol = '$status'
+not_executable_symbol = '$status - Not Executable'
+not_found_symbol = '$status - Not Found'
+sigint_symbol = '/$common_meaning signal $signal_number '
+signal_symbol = 'signal $signal_number/$signal_name'
+success_style = 'fg:base0'
+failure_style = 'bold fg:red'
+recognize_signal_code	= true
+map_symbol = true
+pipestatus = true
+
+[cmd_duration]
+disabled = false
+min_time = 1000
+format = "[took](fg:base01) [$duration]($style) "
+show_notifications = false # enable to get notified when a command ends after taking some time
+min_time_to_notify = 60000
+style = 'fg:base0'
+
+[time]
+format = '[at](fg:base01) [$time]($style) '
+time_format="%d/%b/%y-%R"
+disabled = false
+style = 'fg:base0'
+
+[jobs]
+disabled = false
+style = 'bold fg:blue'
+
+[battery]
+disabled = false
+unknown_symbol = '[?](fg:magenta)'
+
+[[battery.display]]
+threshold = 10
+style = 'bold fg:red'
+discharging_symbol = '💀 '
+
+[[battery.display]]
+threshold = 20
+style = 'bold fg:orange'
+discharging_symbol = '🪫 '
+
+[[battery.display]]
+threshold = 30
+style = 'fg:yellow'
+
+###
+### Set disabled = false and add $container to "format" at the top of the file if you plan on using this inside containers
+###
+
+[container]
+disabled = true
+format = "[inside](fg:base01) [$name](fg:blue) "
+
+###
+### Custom names for operating systems.
+### I made this mainly to remove "Linux" from the name of many distros and make the prompt simpler.
+###
+
+[os.symbols]
+AIX = "AIX "
+Alpaquita = "Linux "
+AlmaLinux = "AlmaLinux "
+Alpine = "Alpine "
+Amazon = "Amazon Linux "
+Android = "Android "
+Arch = "Arch "
+Artix = "Artix "
+CachyOS = "CachyOS "
+CentOS = "CentOS "
+Debian = "Debian "
+DragonFly = "DragonFlyBSD "
+Emscripten = "Emscripten "
+EndeavourOS = "EndeavourOS "
+Fedora = "Fedora "
+FreeBSD = "FreeBSD "
+Garuda = "Garuda "
+Gentoo = "Gentoo "
+HardenedBSD = "HardenedBSD "
+Illumos = "Illumos"
+Kali = "Kali "
+Linux = "Linux "
+Mabox = "Mabox "
+Macos = "MacOS "
+Manjaro = "Manjaro "
+Mariner = "Mariner "
+MidnightBSD = "MidnightBSD "
+Mint = "Linux Mint "
+NetBSD = "NetBSD "
+NixOS = "NixOS "
+Nobara = "Nobara "
+OpenBSD = "OpenBSD "
+OpenCloudOS = "OpenCloudOS "
+openEuler = "openEuler "
+openSUSE = "openSUSE "
+OracleLinux = "Oracle Linux "
+Pop = "PopOS "
+Raspbian = "Raspbian "
+Redhat = "Red Hat "
+RedHatEnterprise = "RHEL "
+RockyLinux = "Rocky "
+Redox = "Redox "
+Solus = "Solus "
+SUSE = "SUSE "
+Ubuntu = "Ubuntu "
+Ultramarine = "Ultramarine "
+Unknown = "Unknown OS "
+Uos = "Unity OS "
+Void = "Void "
+Windows = "Windows "
+
+###
+###  Disable everything that's not used (probably not needed, still gonna do it)
+###
+
+[buf]
+disabled = true
+
+[character]
+disabled = true
+
+[gcloud]
+disabled = true
+
+[localip]
+disabled = true
+
+[cmake]
+disabled = true
+
+[cobol]
+disabled = true
+
+[crystal]
+disabled = true
+
+[dart]
+disabled = true
+
+[deno]
+disabled = true
+
+[dotnet]
+disabled = true
+
+[elixir]
+disabled = true
+
+[elm]
+disabled = true
+
+[erlang]
+disabled = true
+
+[julia]
+disabled = true
+
+[kotlin]
+disabled = true
+
+[lua]
+disabled = true
+
+[nim]
+disabled = true
+
+[nodejs]
+disabled = true
+
+[ocaml]
+disabled = true
+
+[perl]
+disabled = true
+
+[python]
+disabled = true
+
+[php]
+disabled = true
+
+[pulumi]
+disabled = true
+
+[purescript]
+disabled = true
+
+[red]
+disabled = true
+
+[rlang]
+disabled = true
+
+[ruby]
+disabled = true
+
+[rust]
+disabled = true
+
+[shlvl]
+disabled = true
+
+[swift]
+disabled = true
+
+[vlang]
+disabled = true
+
+[zig]
+disabled = true
+
+[azure]
+disabled = true
+
+[openstack]
+disabled = true
