@@ -12,15 +12,10 @@ Simple, modern, fast zsh environment with no hard dependencies.
 - No plugin manager (tries system paths first, otherwise asks if to git clone)
 - Only 3 (very audited) plugins: zsh-autosuggestions, zsh-completions, zsh-syntax-highlighting
 
-## Test in docker 
-
-Note: The prompt will look more minimal than a regular setup due to busybox and extremely minimal setup
+## Test in docker (Debian image)
 
 ```bash
-git clone https://github.com/vipau/zsimple.git
-cd zsimple
-docker build -t zsimple:latest .
-docker run -it zsimple:latest
+docker run -it ghcr.io/vipau/zsimple:main
 ```
 
 ## Install
