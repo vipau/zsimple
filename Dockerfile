@@ -64,5 +64,9 @@ RUN echo '# using global zshrc at /etc/zsh/zshrc' >> /home/penguin/.zshrc
 WORKDIR /home/penguin
 USER penguin
 
+# monitor container health
+HEALTHCHECK --interval=60s --timeout=10s --start-period=5s --retries=3 \
+    CMD zsh -c "echo 'health check passed'" || exit 1
+
 # Default command
 CMD ["zsh"]
