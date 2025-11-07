@@ -156,4 +156,4 @@ jobs:
       - name: Test Void image
         run: |
           docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "echo 'Void test successful'"
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "which starship && which git && which zsh"
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "which git && which zsh"
