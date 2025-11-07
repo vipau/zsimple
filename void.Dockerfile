@@ -2,9 +2,6 @@ FROM ghcr.io/void-linux/void-glibc:latest
 
 ENV TERM=xterm-256color TZ=Etc/UTC ZSIMPLE_DISABLE_GIT=1
 
-# set hostname
-RUN echo zsimple > /etc/hostname
-
 # Update the package database and install packages without recommended deps
 RUN xbps-install -Suy && \
     xbps-install -y zsh zsh-autosuggestions zsh-completions zsh-syntax-highlighting man-db man-pages sudo shadow ncurses-base && \
