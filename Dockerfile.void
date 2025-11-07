@@ -1,26 +1,13 @@
-# Use a minimal Debian base
-FROM debian:bookworm-slim
+FROM ghcr.io/void-linux/void-glibc:latest
 
-# Set environment variables
-ENV DEBIAN_FRONTEND=noninteractive \
-    TERM=xterm-256color
+ENV TERM=xterm-256color
 
-# Install system packages including man-db for completions
-RUN apt-get update && apt-get install -y \
-    zsh \
-    git \
-    ca-certificates \
-    curl \
-    wget \
-    man-db \
-    manpages \
-    manpages-dev \
-    sudo \
-    --no-install-recommends \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+# Update the package database and install packages without recommended deps
+RUN xbps-install -Suy && \
+    xbps-install -y zsh tar git curl man-db man-pages sudo shadow ncurses-base && \
+    rm -rf /var/cache/xbps/*
 
-# Install starship globally
+# Install starship
 RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y
 
 # Create global directories for zsh plugins
@@ -36,7 +23,7 @@ RUN git clone https://github.com/zsh-users/zsh-completions \
 RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting \
     /usr/share/zsh/plugins/zsh-syntax-highlighting --depth 1
 
-# Create global zsh configuration
+# Copy the same global zshrc and starship.toml as in Debian
 COPY zshrc.sh /etc/zsh/zshrc
 RUN chmod 644 /etc/zsh/zshrc
 
@@ -44,7 +31,7 @@ RUN chmod 644 /etc/zsh/zshrc
 ENV STARSHIP_CONFIG=/etc/starship.toml
 
 # Create global starship configuration
-RUN mkdir -p /etc/starship# Prevent the variable from being lost to sudo
+RUN mkdir -p /etc/starship
 COPY starship.toml /etc/starship.toml
 RUN chmod 644 /etc/starship.toml
 # avoid issue of $STARSHIP_CONFIG getting lost to sudo
@@ -54,7 +41,7 @@ COPY aliases.sh /root/.aliases
 COPY exports.sh /root/.exports
 
 # Set default root shell
-RUN chsh -s /bin/zsh
+RUN sed 's|/bin/sh|/bin/zsh|' /etc/passwd
 
 # Create a non-root user
 RUN useradd -m -s /bin/zsh penguin && \
@@ -66,9 +53,7 @@ RUN echo '# using global zshrc at /etc/zsh/zshrc' >> /home/penguin/.zshrc
 COPY aliases.sh /home/penguin/.aliases
 COPY exports.sh /home/penguin/.exports
 
-# Set working directory
 WORKDIR /home/penguin
 USER penguin
 
-# Default command
 CMD ["zsh"]

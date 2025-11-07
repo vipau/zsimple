@@ -12,10 +12,18 @@ Simple, modern, fast zsh environment with no hard dependencies.
 - No plugin manager (tries system paths first, otherwise asks if to git clone)
 - Only 3 (very audited) plugins: zsh-autosuggestions, zsh-completions, zsh-syntax-highlighting
 
-## Test in docker (Debian image)
+## Test in docker 
+
+Minimal Debian image
 
 ```bash
-docker run --rm -it ghcr.io/vipau/zsimple:main
+docker run --rm -it ghcr.io/vipau/zsimple:debian
+```
+
+Minimal Void Linux image
+
+```bash
+docker run --rm -it ghcr.io/vipau/zsimple:void
 ```
 
 ## Install
