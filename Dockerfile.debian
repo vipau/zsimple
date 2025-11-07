@@ -49,6 +49,9 @@ COPY starship.toml /etc/starship.toml
 RUN chmod 644 /etc/starship.toml
 # avoid issue of $STARSHIP_CONFIG getting lost to sudo
 RUN mkdir -p /root/.config/ && ln -s /etc/starship.toml /root/.config/
+# copy other files
+COPY aliases.sh /root/.aliases
+COPY exports.sh /root/.exports
 
 # Set default root shell
 RUN chsh -s /bin/zsh
@@ -59,6 +62,9 @@ RUN useradd -m -s /bin/zsh penguin && \
 
 # Prevent the zsh welcome menu
 RUN echo '# using global zshrc at /etc/zsh/zshrc' >> /home/penguin/.zshrc
+# copy other files
+COPY aliases.sh /home/penguin/.aliases
+COPY exports.sh /home/penguin/.exports
 
 # Set working directory
 WORKDIR /home/penguin
