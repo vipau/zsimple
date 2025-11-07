@@ -3,7 +3,7 @@ Simple, modern, fast zsh environment with no hard dependencies.
 
 ## Optional dependencies
 - git, for downloading the plugins if not installed via a package manager. If neither plugins nor git are found, they will not be used with a warning that can be disabled.
-- starship, for having a nice customizable and powerful prompt. Check out [my configuration here](https://vipau.dev/posts/my-shell-prompt/)
+- [starship](https://starship.rs/), for having a nice customizable and powerful prompt. Check out [my lightweight configuration here](https://vipau.dev/posts/my-shell-prompt/)
 - (temporarily disabled) ssh-agent: will be used if found
 
 ## Features
@@ -14,13 +14,13 @@ Simple, modern, fast zsh environment with no hard dependencies.
 
 ## Test in docker 
 
-Minimal Debian image
+Slim Debian image including starship and my lightweight config
 
 ```bash
 docker run --rm -it ghcr.io/vipau/zsimple:debian-latest
 ```
 
-Minimal Void Linux image
+Extremely minimal Void Linux image without starship
 
 ```bash
 docker run --rm -it ghcr.io/vipau/zsimple:void-latest
