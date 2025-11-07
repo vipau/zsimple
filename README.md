@@ -15,7 +15,7 @@ Simple, modern, fast zsh environment with no hard dependencies.
 ## Test in docker (Debian image)
 
 ```bash
-docker run -it ghcr.io/vipau/zsimple:main
+docker run --rm -it ghcr.io/vipau/zsimple:main
 ```
 
 ## Install
