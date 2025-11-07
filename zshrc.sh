@@ -56,9 +56,9 @@ if command -v git >/dev/null 2>&1; then
   GIT_AVAILABLE=1
 else
   GIT_AVAILABLE=0
-  if [ -z "$DISABLE_GIT_WARNING" ]; then
+  if [ -z "$ZSIMPLE_DISABLE_GIT" ]; then
     echo "git not installed. You can disable this warning by running:"
-    echo "echo 'export DISABLE_GIT_WARNING=1' >> ~/.exports"
+    echo "echo 'export ZSIMPLE_DISABLE_GIT=1' >> ~/.exports"
   fi
 fi
 
@@ -68,7 +68,7 @@ _clone_if_needed() {
   local repo="$1"
   local name="${2:-${repo##*/}}"
   local target="$ZSH_PLUGIN_DIR/$name"
-  if [ "$GIT_AVAILABLE" -eq 1 ] && [ ! -d "$target/.git" ]; then
+  if [ "$GIT_AVAILABLE" -eq 1 ] && [ -z "$ZSIMPLE_DISABLE_GIT" ] && [ ! -d "$target/.git" ]; then
     git clone --depth=1 "https://github.com/$repo" "$target" >/dev/null 2>&1  || { echo "git clone failed: $repo" >&2; return 1; }
     # normal output needs to go to stderr or the function will not print the path correctly
   fi
@@ -83,7 +83,7 @@ if ! _source_first \
   ${HOMEBREW_PREFIX}/share/zsh-completions/zsh-completions.plugin.zsh \
   /usr/local/share/zsh-completions/zsh-completions.plugin.zsh
 then
-  _source_first "$(_clone_if_needed zsh-users/zsh-completions)"/*.zsh >/dev/null 2>&1
+  [ -z "$ZSIMPLE_DISABLE_GIT" ] && _source_first "$(_clone_if_needed zsh-users/zsh-completions)"/*.zsh >/dev/null 2>&1
 fi
 
 # --- zsh-autosuggestions ---
@@ -93,7 +93,7 @@ if ! _source_first \
   ${HOMEBREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh \
   /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 then
-  _source_first "$(_clone_if_needed zsh-users/zsh-autosuggestions)"/*.zsh >/dev/null 2>&1
+  [ -z "$ZSIMPLE_DISABLE_GIT" ] && _source_first "$(_clone_if_needed zsh-users/zsh-autosuggestions)"/*.zsh >/dev/null 2>&1
 fi
 
 # --- zsh-syntax-highlighting --- (must be last)
@@ -102,7 +102,7 @@ if ! _source_first \
   ${HOMEBREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh \
   /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 then
-  _source_first "$(_clone_if_needed zsh-users/zsh-syntax-highlighting)"/*.zsh >/dev/null 2>&1
+  [ -z "$ZSIMPLE_DISABLE_GIT" ] && _source_first "$(_clone_if_needed zsh-users/zsh-syntax-highlighting)"/*.zsh >/dev/null 2>&1
 fi
 
 # Tweak behaviour for speed
