@@ -14,6 +14,8 @@ RUN chmod 644 /etc/zsh/zshrc
 # copy other files
 COPY aliases.sh /root/.aliases
 COPY exports.sh /root/.exports
+# prevent variable from being lost to sudo
+RUN echo 'export "ZSIMPLE_DISABLE_GIT=1"' >> /root/.exports
 
 # Set default root shell (not using chsh to not install util-linux package)
 RUN sed 's|/bin/sh|/bin/zsh|' /etc/passwd
