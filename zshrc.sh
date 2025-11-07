@@ -69,6 +69,7 @@ _clone_if_needed() {
   local name="${2:-${repo##*/}}"
   local target="$ZSH_PLUGIN_DIR/$name"
   if [ "$GIT_AVAILABLE" -eq 1 ] && [ -z "$ZSIMPLE_DISABLE_GIT" ] && [ ! -d "$target/.git" ]; then
+    read -q "?OK to clone git repo \"$repo\"? (y/n)" || echo -e '\nYou can disable git with:\necho "export ZSIMPLE_DISABLE_GIT=1" >> ~/.exports' 1>&2 ; return
     git clone --depth=1 "https://github.com/$repo" "$target" >/dev/null 2>&1  || { echo "git clone failed: $repo" >&2; return 1; }
     # normal output needs to go to stderr or the function will not print the path correctly
   fi
