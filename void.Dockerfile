@@ -1,27 +1,14 @@
 FROM ghcr.io/void-linux/void-glibc:latest
 
-ENV TERM=xterm-256color TZ=Etc/UTC
+ENV TERM=xterm-256color TZ=Etc/UTC ZSIMPLE_DISABLE_GIT=1
 
 # set hostname
 RUN echo zsimple > /etc/hostname
 
 # Update the package database and install packages without recommended deps
 RUN xbps-install -Suy && \
-    xbps-install -y zsh git man-db man-pages sudo shadow ncurses-base && \
+    xbps-install -y zsh zsh-autosuggestions zsh-completions zsh-syntax-highlighting man-db man-pages sudo shadow ncurses-base && \
     rm -rf /var/cache/xbps/*
-
-# Create global directories for zsh plugins
-RUN mkdir -p /usr/share/zsh/plugins
-
-# Clone zsh plugins to global locations
-RUN git clone https://github.com/zsh-users/zsh-autosuggestions \
-    /usr/share/zsh/plugins/zsh-autosuggestions --depth 1
-
-RUN git clone https://github.com/zsh-users/zsh-completions \
-    /usr/share/zsh/plugins/zsh-completions --depth 1
-
-RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting \
-    /usr/share/zsh/plugins/zsh-syntax-highlighting --depth 1
 
 # Copy the global zshrc
 COPY zshrc.sh /etc/zsh/zshrc
