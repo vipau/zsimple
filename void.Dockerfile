@@ -5,7 +5,7 @@ ENV TERM=xterm-256color TZ=Etc/UTC ZSIMPLE_DISABLE_GIT=1
 # Update the package database and install packages without recommended deps
 RUN xbps-install -Suy && \
     xbps-install -y zsh zsh-autosuggestions zsh-completions zsh-syntax-highlighting man-db man-pages sudo shadow ncurses-base && \
-    rm -rf /var/cache/xbps/*
+    xbps-remove -yOo
 
 # Copy the global zshrc
 COPY zshrc.sh /etc/zsh/zshrc
