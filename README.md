@@ -17,13 +17,13 @@ Simple, modern, fast zsh environment with no hard dependencies.
 Minimal Debian image
 
 ```bash
-docker run --rm -it ghcr.io/vipau/zsimple:debian
+docker run --rm -it ghcr.io/vipau/zsimple:debian-latest
 ```
 
 Minimal Void Linux image
 
 ```bash
-docker run --rm -it ghcr.io/vipau/zsimple:void
+docker run --rm -it ghcr.io/vipau/zsimple:void-latest
 ```
 
 ## Install
