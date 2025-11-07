@@ -1,18 +1,68 @@
-# non-slim debian so we have manpages and full completion
-FROM debian:stable
+# Use a minimal Debian base
+FROM debian:bookworm-slim
 
-# upgrade all, install zsh and all optional dependencies too, then clean apt cache (for final image size)
-RUN apt update && DEBIAN_FRONTEND=noninteractive apt upgrade --assume-yes && DEBIAN_FRONTEND=noninteractive apt install -y --assume-yes zsh git starship man-db curl neovim && apt clean
+# Set environment variables
+ENV DEBIAN_FRONTEND=noninteractive \
+    TERM=xterm-256color
 
-# copy zsimple to root home, set permissions
-COPY exports.sh /root/.exports
-COPY aliases.sh /root/.aliases
-COPY zshrc.sh /root/.zshrc
-RUN chmod -R 770 /root/.exports /root/.aliases /root/.zshrc
-RUN mkdir -p /root/.config/
-COPY starship.toml /root/.config/starship.toml
+# Install system packages including man-db for completions
+RUN apt-get update && apt-get install -y \
+    zsh \
+    git \
+    ca-certificates \
+    curl \
+    wget \
+    man-db \
+    manpages \
+    manpages-dev \
+    sudo \
+    --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get clean
 
-# run the zshrc once so that plugins get git cloned
-RUN zsh -c 'source /root/.zshrc'
+# Install starship globally
+RUN curl -fsSL https://starship.rs/install.sh | sh -s -- -y
 
-ENTRYPOINT ["zsh"]
+# Create global directories for zsh plugins
+RUN mkdir -p /usr/share/zsh/plugins
+
+# Clone zsh plugins to global locations
+RUN git clone https://github.com/zsh-users/zsh-autosuggestions \
+    /usr/share/zsh/plugins/zsh-autosuggestions --depth 1
+
+RUN git clone https://github.com/zsh-users/zsh-completions \
+    /usr/share/zsh/plugins/zsh-completions --depth 1
+
+RUN git clone https://github.com/zsh-users/zsh-syntax-highlighting \
+    /usr/share/zsh/plugins/zsh-syntax-highlighting --depth 1
+
+# Create global zsh configuration
+COPY zshrc.sh /etc/zsh/zshrc
+RUN chmod 644 /etc/zsh/zshrc
+
+# Set starship config location globally
+ENV STARSHIP_CONFIG=/etc/starship.toml
+
+# Create global starship configuration
+RUN mkdir -p /etc/starship# Prevent the variable from being lost to sudo
+COPY starship.toml /etc/starship.toml
+RUN chmod 644 /etc/starship.toml
+# avoid issue of $STARSHIP_CONFIG getting lost to sudo
+RUN mkdir -p /root/.config/ && ln -s /etc/starship.toml /root/.config/
+
+# Set default root shell
+RUN chsh -s /bin/zsh
+
+# Create a non-root user
+RUN useradd -m -s /bin/zsh penguin && \
+    echo "penguin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/penguin
+
+# Prevent the zsh welcome menu
+RUN echo '# using global zshrc at /etc/zsh/zshrc' >> /home/penguin/.zshrc
+
+# Set working directory
+WORKDIR /home/penguin
+USER penguin
+
+# Default command
+CMD ["zsh"]
