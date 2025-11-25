@@ -1,10 +1,12 @@
 # zsimple
 Simple, modern, fast zsh environment with no hard dependencies.
 
-## Optional dependencies
-- git, for downloading the plugins if not installed via a package manager. If neither plugins nor git are found, they will not be used with a warning that can be disabled.
-- [starship](https://starship.rs/), for having a nice customizable and powerful prompt. Check out [my lightweight configuration here](https://vipau.dev/posts/my-shell-prompt/)
-- (temporarily disabled) ssh-agent: will be used if found
+## Requirements
+- zsh (recommended to use a recent version)
+
+## Optional recommended dependencies
+- `git`, for downloading the plugins if not installed via a package manager. If neither plugins nor git are found, they will not be used, and a warning will be shown (can be disabled).
+- [starship](https://starship.rs/), for having a nice customizable and powerful prompt. Check out my lightweight configuration: [Blog](https://vipau.dev/posts/my-shell-prompt/) | [GitHub](https://github.com/vipau/veeship)
 
 ## Features
 - Modern feel with quality of life features while keeping things simple and fast
