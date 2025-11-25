@@ -45,7 +45,7 @@ ENV STARSHIP_CONFIG=/etc/starship.toml
 
 # Create global starship configuration
 RUN mkdir -p /etc/starship# Prevent the variable from being lost to sudo
-COPY starship.toml /etc/starship.toml
+COPY .veeship/starship.toml /etc/starship.toml
 RUN chmod 644 /etc/starship.toml
 # avoid issue of $STARSHIP_CONFIG getting lost to sudo
 RUN mkdir -p /root/.config/ && ln -s /etc/starship.toml /root/.config/

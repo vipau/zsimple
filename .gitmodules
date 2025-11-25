@@ -1,0 +1,3 @@
+[submodule ".veeship"]
+	path = .veeship
+	url = https://github.com/vipau/veeship.git
