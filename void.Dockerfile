@@ -3,7 +3,9 @@ FROM ghcr.io/void-linux/void-glibc:latest
 ENV TERM=xterm-256color TZ=Etc/UTC ZSIMPLE_DISABLE_GIT=1
 
 # Update the package database and install packages without recommended deps
-RUN xbps-install -Suy && \
+RUN xbps-install -S && \
+    xbps-install -uy xbps && \
+    xbps-install -uy && \
     xbps-install -y zsh zsh-autosuggestions zsh-completions zsh-syntax-highlighting man-db man-pages sudo shadow ncurses-base && \
     xbps-remove -yOo
 
