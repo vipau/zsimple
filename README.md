@@ -37,10 +37,16 @@ Please also always keep your own backups of dotfiles.
 git clone https://github.com/vipau/zsimple.git
 cd zsimple
 
-# Also copy my starship theme (does not install starship itself)
+: <<'INFO'
+Also copy my starship theme (does not install starship itself)
+INFO
+
 ZSIMPLE_INSTALL_THEME=1 sh install.sh
-# if you don't want starship or have your own config:
-# sh install.sh
+
+: <<'INFO'
+if you don't want starship or have your own config:
+sh install.sh
+INFO
 
 zsh
 ```
