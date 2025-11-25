@@ -46,3 +46,6 @@ zsh
 ```
 
 Make sure to review the contents of ~/.aliases and ~/.exports afterwards, and customize to your liking.  
+
+## Todo
+- (temporarily disabled) ssh-agent: reuse existing agent if found running
