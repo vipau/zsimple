@@ -147,10 +147,10 @@ jobs:
 
       - name: Test Debian image
         run: |
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:debian-latest zsh -c "echo 'Debian test successful'"
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:debian-latest zsh -c "which starship && which git && which zsh"
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:debian-latest zsh -c "command -v zsh starship git"
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:debian-latest zsh -c "source ~/.zshrc && echo 'Debian test successful: Hi from zsh!'"
 
       - name: Test Void image
         run: |
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "echo 'Void test successful'"
-          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "which zsh"
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "command -v zsh"
+          docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "source ~/.zshrc && echo 'Void test successful: Hi from zsh!'"
