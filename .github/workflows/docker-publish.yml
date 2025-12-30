@@ -152,3 +152,4 @@ jobs:
         run: |
           docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "echo 'Void test successful'"
           docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:void-latest zsh -c "which zsh"
+
