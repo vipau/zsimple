@@ -60,7 +60,7 @@ If your plugins were downloaded from your system's package manager or homebrew, 
 If you included my aliases file, you can just run `zsimple-upgrade-plugins`
 
 ```bash
-alias zsimple-upgrade-plugins='for d in "${ZSH_PLUGIN_DIR:=$HOME/.zsh/plugins}"/*; do echo "Updating ${d%/.git}" ; git -C "${d%/.git}" pull ; done'
+alias zsimple-upgrade-plugins='for d in "${ZSH_PLUGIN_DIR:-$HOME/.zsh/plugins}"/*; do echo "Updating ${d%/.git}" ; git -C "${d%/.git}" pull ; done'
 ```
 
 ## Todo

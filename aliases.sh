@@ -8,7 +8,7 @@ alias zshrc="${EDITOR:-vim} ~/.zshrc"
 # reload without entering a nested zsh
 alias reload="exec zsh"
 
-alias zsimple-upgrade-plugins='for d in "${ZSH_PLUGIN_DIR:=$HOME/.zsh/plugins}"/*; do echo "Updating ${d%/.git}" ; git -C "${d%/.git}" pull ; done'
+alias zsimple-upgrade-plugins='for d in "${ZSH_PLUGIN_DIR:-$HOME/.zsh/plugins}"/*; do echo "Updating ${d%/.git}" ; git -C "${d%/.git}" pull ; done'
 
 #=====
 # Overrides to various existing commands
