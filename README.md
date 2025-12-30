@@ -1,5 +1,7 @@
 # zsimple
-Simple, modern, fast zsh environment with no hard dependencies.
+Simple, modern, fast zsh environment with no hard dependencies.  
+[The blog post](https://vipau.dev/posts/zsimple/) has demo videos
+and you can also try this in a Docker container as mentioned below.
 
 ## Requirements
 - zsh (recommended to use a recent version)
