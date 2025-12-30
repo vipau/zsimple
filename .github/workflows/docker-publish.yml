@@ -11,140 +11,159 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-debian:
-    name: Build Debian-based Image
-    runs-on: ubuntu-latest
+
+  build:
+    name: Build ${{ matrix.distro }} (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
     permissions:
       contents: read
       packages: write
       id-token: write
 
+    strategy:
+      fail-fast: false
+      matrix:
+        distro: [debian, void]
+        arch: [amd64, arm64]
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+            platform: linux/amd64
+
+          - arch: arm64
+            runner: ubuntu-22.04-arm64
+            platform: linux/arm64
+
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: 'true'
+          submodules: true
 
       - name: Install cosign
         if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
-        with:
-          cosign-release: 'v2.2.4'
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: sigstore/cosign-installer@v3.5.0
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+        uses: docker/setup-buildx-action@v3
 
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Log in to registry
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract Docker metadata
-        id: meta-debian
-        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
+        id: meta
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=semver,pattern={{version}}
-            type=raw,value=debian-latest
-            type=raw,value=latest
+            type=raw,value=${{ matrix.distro }}-latest
 
-      - name: Build and push Docker image (Debian)
-        id: build-and-push-debian
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
+      - name: Build (single arch)
+        id: build
+        uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./debian.Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta-debian.outputs.tags }}
-          labels: ${{ steps.meta-debian.outputs.labels }}
+          file: ./${{ matrix.distro }}.Dockerfile
+          platforms: ${{ matrix.platform }}
+          push: false
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          platforms: linux/amd64,linux/arm64
 
-      - name: Sign the published Docker image (Debian)
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          TAGS: ${{ steps.meta-debian.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push-debian.outputs.digest }}
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+      - name: Save image to tar
+        run: |
+          docker save ${{ steps.meta.outputs.tags }} -o oci.tar
 
-  build-void:
-    name: Build Void Linux-based Image
+      - name: Upload OCI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-${{ matrix.distro }}-${{ matrix.arch }}
+          path: oci.tar
+
+  publish:
+    name: Publish Multi-Arch Images
+    needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: read
       packages: write
       id-token: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 #v3.5.0
+      - uses: actions/download-artifact@v4
         with:
-          cosign-release: 'v2.2.4'
+          name: image-debian-amd64
+          path: debian-amd64
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-debian-arm64
+          path: debian-arm64
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-void-amd64
+          path: void-amd64
 
-      - name: Log into registry ${{ env.REGISTRY }}
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d # v3.0.0
+      - uses: actions/download-artifact@v4
+        with:
+          name: image-void-arm64
+          path: void-arm64
+
+      - name: Log in to registry
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract Docker metadata
-        id: meta-void
-        uses: docker/metadata-action@96383f45573cb7f253c731d3b3ab81c87ef81934 # v5.0.0
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            type=semver,pattern={{version}}
-            type=raw,value=void-latest
+      - name: Load all images
+        run: |
+          docker load -i debian-amd64/oci.tar
+          docker load -i debian-arm64/oci.tar
+          docker load -i void-amd64/oci.tar
+          docker load -i void-arm64/oci.tar
 
-      - name: Build and push Docker image (Void)
-        id: build-and-push-void
-        uses: docker/build-push-action@0565240e2d4ab88bba5387d719585280857ece09 # v5.0.0
-        with:
-          context: .
-          file: ./void.Dockerfile
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta-void.outputs.tags }}
-          labels: ${{ steps.meta-void.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          platforms: linux/amd64,linux/arm64
+      - name: Create and push manifest lists
+        run: |
+          for distro in debian void; do
+            docker manifest create \
+              $REGISTRY/$IMAGE_NAME:$distro-latest \
+              --amend $REGISTRY/$IMAGE_NAME:$distro-latest-amd64 \
+              --amend $REGISTRY/$IMAGE_NAME:$distro-latest-arm64
 
-      - name: Sign the published Docker image (Void)
-        if: ${{ github.event_name != 'pull_request' }}
-        env:
-          TAGS: ${{ steps.meta-void.outputs.tags }}
-          DIGEST: ${{ steps.build-and-push-void.outputs.digest }}
-        run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+            docker manifest push $REGISTRY/$IMAGE_NAME:$distro-latest
+          done
+
+      - name: Sign multi-arch manifests
+        run: |
+          for distro in debian void; do
+            cosign sign --yes $REGISTRY/$IMAGE_NAME:$distro-latest
+          done
 
   test-images:
-    name: Test Both Images
-    runs-on: ubuntu-latest
-    needs: [build-debian, build-void]
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+    name: 'Test Docker images'
+    needs: publish
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        arch: [amd64, arm64]
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-22.04-arm
 
+  
+    steps:
       - name: Test Debian image
         run: |
           docker run --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:debian-latest zsh -c "command -v zsh starship git"

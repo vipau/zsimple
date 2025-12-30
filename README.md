@@ -53,5 +53,13 @@ zsh
 
 Make sure to review the contents of ~/.aliases and ~/.exports afterwards, and customize to your liking.  
 
+## How to update plugins 
+If your plugins were downloaded from your system's package manager or homebrew, update them from there. If they were git cloned by our script, and you find them in `~/.zsh/plugins` and I left a small function in my ~/.aliases to update them.  
+If you included my aliases file, you can just run `zsimple-upgrade-plugins`
+
+```bash
+alias zsimple-upgrade-plugins='for d in ~/.zsh/plugins/*; do echo "Updating ${d%/.git}" ; git -C "${d%/.git}" pull ; done'
+```
+
 ## Todo
 - (temporarily disabled) ssh-agent: reuse existing agent if found running
