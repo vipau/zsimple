@@ -36,7 +36,7 @@ This will backup any existing files called `.zshrc`, `.exports` and `.aliases`.
 Please also always keep your own backups of dotfiles.
 
 ```bash
-git clone https://github.com/vipau/zsimple.git
+git clone --recursive https://github.com/vipau/zsimple.git
 cd zsimple
 
 : <<'INFO'
