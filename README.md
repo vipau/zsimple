@@ -35,21 +35,21 @@ docker run --rm -it ghcr.io/vipau/zsimple:void-latest
 This will backup any existing files called `.zshrc`, `.exports` and `.aliases`.  
 Please also always keep your own backups of dotfiles.
 
+Try with my fast starship theme ([readme](https://github.com/vipau/veeship/blob/main/README.md))
+
 ```bash
 git clone --recursive https://github.com/vipau/zsimple.git
 cd zsimple
-
-: <<'INFO'
-Also copy my starship theme (does not install starship itself)
-INFO
-
 ZSIMPLE_INSTALL_THEME=1 sh install.sh
+zsh
+```
 
-: <<'INFO'
-if you don't want starship or have your own config:
+For zsh default or your custom prompt:
+
+```bash
+git clone https://github.com/vipau/zsimple.git
+cd zsimple
 sh install.sh
-INFO
-
 zsh
 ```
 
