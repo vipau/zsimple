@@ -8,7 +8,7 @@ else
 echo "Couldn't properly name backups with their date! they will be like: $HOME/.zshrc-zsimplebkp"
   cp "$HOME/.zshrc" "$HOME/.zshrc-zsimplebkp"
   cp "$HOME/.aliases" "$HOME/.aliases-zsimplebkp"
-  cp "$HOME/.exports" "/.exports-zsimplebkp"
+  cp "$HOME/.exports" "$HOME/.exports-zsimplebkp"
 fi
 
 cp zshrc.sh "$HOME/.zshrc" && echo "Copied zshrc.sh to $HOME/.zshrc"
