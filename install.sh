@@ -1,6 +1,6 @@
 #!/bin/sh
 datenow="$(date +'%Y-%m-%d_%H-%M-%S')"
-if [ ! -z "$datenow" ]; then
+if [ -n "$datenow" ]; then
   cp "$HOME/.zshrc" "$HOME/.zshrc.backup.${datenow}" && echo "Backed up .zshrc to $HOME/.zshrc.backup.${datenow}"
   cp "$HOME/.aliases" "$HOME/.aliases.backup.${datenow}" && echo "Backed up .aliases to $HOME/.aliases.backup.${datenow}"
   cp "$HOME/.exports" "$HOME/.exports.backup.${datenow}" && echo "Backed up .exports to $HOME/.exports.backup.${datenow}"
@@ -16,7 +16,7 @@ cp aliases.sh "$HOME/.aliases" && echo "Copied aliases.sh to $HOME/.aliases"
 cp exports.sh "$HOME/.exports" && echo "Copied exports.sh to $HOME/.exports"
 chmod +x "$HOME/.zshrc" "$HOME/.aliases" "$HOME/.exports"
 
-if [ "$ZSIMPLE_INSTALL_THEME" -eq 1 ] ; then
+if [ -n "$ZSIMPLE_INSTALL_THEME" ] ; then
   mkdir -p "$HOME/.config" && \
   cp "$HOME/.config/starship.toml" "$HOME/.config/starship.toml.backup.${datenow}" && \
   echo "Backed up starship.toml to $HOME/.config/starship.toml.backup.${datenow}" && \
