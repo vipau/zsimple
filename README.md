@@ -15,6 +15,7 @@ and you can also try this in a Docker container as mentioned below.
 - Works on Linux, MacOS and some Windows environments
 - No plugin manager (tries system paths first, otherwise asks if to git clone)
 - Only 3 (very audited) plugins: zsh-autosuggestions, zsh-completions, zsh-syntax-highlighting
+- Reuse an existing ssh-agent if found, otherwise start one and add keys
 
 ## Test in docker 
 
@@ -62,6 +63,3 @@ If you included my aliases file, you can just run `zsimple-upgrade-plugins`
 ```bash
 alias zsimple-upgrade-plugins='for d in "${ZSH_PLUGIN_DIR:-$HOME/.zsh/plugins}"/*; do echo "Updating ${d%/.git}" ; git -C "${d%/.git}" pull ; done'
 ```
-
-## Todo
-- (temporarily disabled) ssh-agent: reuse existing agent if found running
