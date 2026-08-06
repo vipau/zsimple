@@ -150,6 +150,44 @@ bindkey ' ' magic-space
 # complete from middle of word
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
+#==== 
+# ssh-agent logic
+# ======
+# 
+# Reuse existing ssh-agent if found, otherwise start one
+
+SSH_ENV="$HOME/.ssh/agent_env"
+
+start_agent() {
+    echo "Starting new ssh-agent..."
+    # Run in a subshell with strict umask to ensure the env file is secure
+    (umask 066; ssh-agent > "$SSH_ENV")
+    . "$SSH_ENV" > /dev/null
+    
+    # Running ssh-add with no arguments automatically adds standard keys:
+    # id_rsa, id_dsa, id_ecdsa, id_ed25519, and id_xmss
+    ssh-add
+}
+
+# Test if the agent is already running and accessible
+ssh-add -l >/dev/null 2>&1
+
+# ssh-add -l returns 2 if it cannot contact the agent
+if [ $? -eq 2 ]; then
+    # Cannot contact agent. Try sourcing the saved environment if it exists.
+    if [ -f "$SSH_ENV" ]; then
+        . "$SSH_ENV" > /dev/null
+    fi
+
+    # Check the socket again after sourcing the environment
+    ssh-add -l >/dev/null 2>&1
+    
+    if [ $? -eq 2 ]; then
+        # The agent is completely dead (e.g., system reboot). Start a new one.
+        start_agent
+    fi
+fi
+
 #=====
 ## Autocompletion (goes at the end, before prompt)
 #=====
